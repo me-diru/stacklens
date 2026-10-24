@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>stacklens</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="logo" aria-hidden="true"></span><strong>stacklens</strong><span class="muted" id="generated"></span></div>
+  <input id="search" type="search" placeholder="Search nodes…" aria-label="Search nodes">
+  <div class="actions">
+    <button id="view-graph" class="seg on" aria-pressed="true">Graph</button>
+    <button id="view-table" class="seg" aria-pressed="false">Table</button>
+    <button id="rescan" class="primary">Rescan</button>
+  </div>
+</header>
+
+<section class="stats" id="stats" aria-label="Summary"></section>
+
+<nav class="legend" id="legend" aria-label="Filter by type"></nav>
+
+<main class="main">
+  <div id="graph-wrap" class="graph-wrap"><svg id="graph" role="img" aria-label="Stack graph"></svg>
+    <div id="tooltip" class="tooltip" hidden></div>
+    <p class="hint muted">Drag to pan · scroll to zoom · click a node for details</p>
+  </div>
+  <div id="table-wrap" class="table-wrap" hidden><table id="table"><thead><tr><th>Type</th><th>Name</th><th>Links</th><th>Details</th></tr></thead><tbody></tbody></table></div>
+  <aside id="panel" class="panel" aria-live="polite"><p class="muted">Select a node to see what it connects to.</p></aside>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="/app.js"></script>
+</body>
+</html>

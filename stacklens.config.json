@@ -1,0 +1,5 @@
+{
+  "roots": ["~/Desktop/projects"],
+  "maxDepth": 2,
+  "collectors": ["runtimes", "repos", "packages", "docker", "ports", "agents"]
+}
