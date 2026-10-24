@@ -260,7 +260,7 @@ impl App {
             if !visible[a] || !visible[b] {
                 continue;
             }
-            let hi = sel.map_or(false, |s| a == s || b == s);
+            let hi = sel.is_some_and(|s| a == s || b == s);
             let dim = sel.is_some() && !hi;
             let col = if hi {
                 accent
