@@ -32,22 +32,24 @@
 
 ## Writing a collector
 
-```js
-import { Graph } from '../graph.js';
+```rust
+use crate::config::Config;
+use crate::graph::{meta_set, Graph, NodeType};
 
-export async function collect({ config, graph }) {
-  const g = new Graph();
-  g.node('service:Example', 'service', 'Example', { region: 'us-east-1' }, 'example');
-  for (const repo of [...graph.nodes.values()].filter(n => n.type === 'repo')) {
-    g.edge(repo.id, 'service:Example', 'calls');
-  }
-  return g;
+pub fn collect(_config: &Config, graph: &Graph) -> Graph {
+    let mut g = Graph::new();
+    let n = g.node("service:Example", NodeType::Service, "Example", "example");
+    meta_set(n, "region", "us-east-1");
+    for repo in graph.of_type(NodeType::Repo) {
+        g.edge(&repo.id, "service:Example", "calls");
+    }
+    g
 }
 ```
 
-`Graph.node` is idempotent: calling it again with the same id merges `meta` into the existing node.
-Edges whose endpoints never materialise are dropped at serialisation time, so it is safe to reference
-nodes another collector may or may not produce (for example `runtime:docker`).
+`Graph::node` is idempotent: calling it again with the same id returns the existing node so you can add
+metadata. Edges whose endpoints never materialise are dropped by `Graph::prune` after all collectors run,
+so it is safe to reference nodes another collector may or may not produce (for example `runtime:docker`).
 
-Collectors run in the order listed in `src/scan.js`: `runtimes`, `repos`, `packages`, `docker`, `ports`,
-`agents`. Put yours after anything it needs to read from `graph`.
+Collectors run in the order listed in `src/collectors/mod.rs`: `runtimes`, `repos`, `packages`, `docker`,
+`ports`, `agents`. Put yours after anything it needs to read from `graph`.
